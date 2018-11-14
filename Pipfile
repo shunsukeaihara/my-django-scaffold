@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework-jwt = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
+social-auth-app-django = "*"
+djangorestframework-camel-case = "*"
+django-extensions = "*"
+django-debug-toolbar = "*"
+social-auth-core = {extras = ["openidconnect"], version = "*"}
+ipython = "*"
+django-cors-headers = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
