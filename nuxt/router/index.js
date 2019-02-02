@@ -51,6 +51,48 @@ export function createRouter() {
         component: () => import('~/views/index.vue').then(hook),
       },
       {
+        name: 'emailChangeToken',
+        path: '/emailchange/:token',
+        component: () => import('~/views/emailChange').then(hook),
+        props: true,
+      },
+      {
+        name: 'emailChange',
+        path: '/emailchange/',
+        component: () => import('~/views/emailChange/emailChange.vue').then(hook),
+        props: true,
+      },
+      {
+        name: 'activateToken',
+        path: '/activate/:token',
+        component: () => import('~/views/activate').then(hook),
+        props: true,
+      },
+      {
+        name: 'activate',
+        path: '/activate/',
+        component: () => import('~/views/activate/activate.vue').then(hook),
+        props: true,
+      },
+      {
+        name: 'resetToken',
+        path: '/reset/:token',
+        component: () => import('~/views/reset/resetToken.vue').then(hook),
+        props: true,
+      },
+      {
+        name: 'reset',
+        path: '/reset/',
+        component: () => import('~/views/reset/reset.vue').then(hook),
+        props: true,
+      },
+      {
+        name: 'resetRequest',
+        path: '/reset_request/',
+        component: () => import('~/views/reset').then(hook),
+        props: true,
+      },
+      {
         name: 'login',
         path: '/login',
         component: () => import('~/views/login.vue').then(hook),

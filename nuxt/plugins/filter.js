@@ -30,3 +30,15 @@ Vue.filter('price', (value) => {
 Vue.filter('toNumber', (value) => {
   return Number(value)
 })
+
+Vue.filter('truncate', function(value, length, omission) {
+  value = String(value)
+  length = length ? parseInt(length, 10) : 20;
+  omission = omission ? omission.toString() : '...';
+
+  if (value.length <= length) {
+    return value;
+  } else {
+    return value.substring(0, length) + omission;
+  }
+});
