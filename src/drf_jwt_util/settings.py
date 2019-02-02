@@ -6,17 +6,20 @@ USER_SETTINGS = getattr(settings, 'DRF_JWT_UTIL', None)
 
 DEFAULTS = {
     'REQUIRE_EMAIL_CONFIRMATION': False,
-    "SITE_DOMAIN": "http://127.0.0.1:8000",
-    "PASSWORD_RESET_PATH_TEMPLATE": "/password_reset/{token}",
+    "FRONTEND_DOMAIN_WITH_SCHEME": "http://127.0.0.1:3000",
+    "PASSWORD_RESET_PATH_TEMPLATE": "/reset/{token}",
     "ACTIVATION_PATH_TEMPLATE": "/activate/{token}",
-    "EMAIL_CONFIRMATION_PATH_TEMPLATE": "/confirmation/{token}",
+    "EMAIL_CONFIRMATION_PATH_TEMPLATE": "/confirm/{token}",
+    "EMAIL_CHANGE_PATH_TEMPLATE": "/emailchange/{token}",
     "USER_SERIALIZER": "drf_jwt_util.serializers.DefaultUserSerializer",
-    "FROM_EMAIL": "webmaster@localhost",
+    "ACTIVATION_SERIALIZER": "drf_jwt_util.serializers.PasswordSerializer",
+    "FROM_EMAIL": settings.DEFAULT_FROM_EMAIL,
 }
 
 
 IMPORT_STRINGS = [
-    "USER_SERIALIZER"
+    "USER_SERIALIZER",
+    "ACTIVATION_SERIALIZER",
 ]
 
 api_settings = APISettings(USER_SETTINGS, DEFAULTS, IMPORT_STRINGS)

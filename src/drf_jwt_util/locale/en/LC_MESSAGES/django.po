@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-12 06:50+0900\n"
+"POT-Creation-Date: 2018-11-29 00:45+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,18 +22,47 @@ msgstr ""
 msgid "Invalid signature."
 msgstr ""
 
-#: auth.py:20 serializers.py:36
+#: auth.py:20 serializers.py:58
 msgid "User account is disabled."
 msgstr ""
 
-#: serializers.py:25
+#: serializers.py:47
 msgid "Invalid payload."
 msgstr ""
 
-#: serializers.py:32
+#: serializers.py:54
 msgid "User doesn't exist."
 msgstr ""
 
-#: serializers.py:58
+#: serializers.py:81
 msgid "You must type the same email each time."
+msgstr ""
+
+#: templates/drf_jwt_util/email/activation_message.txt:3
+#: templates/drf_jwt_util/email/confirmation_message.txt:3
+#: templates/drf_jwt_util/email/passwordreset_message.txt:3
+#, python-format
+msgid ""
+"\n"
+"\n"
+"%(token_url)s\n"
+"\n"
+msgstr ""
+
+#: templates/drf_jwt_util/email/activation_subject.txt:3
+#: templates/drf_jwt_util/email/confirmation_subject.txt:3
+#: templates/drf_jwt_util/email/passwordreset_subject.txt:3
+msgid "Title"
+msgstr ""
+
+#: views.py:40
+msgid "Token has expired."
+msgstr ""
+
+#: views.py:83
+msgid "User has already been confirmed."
+msgstr ""
+
+#: views.py:115
+msgid "User has already been activated."
 msgstr ""

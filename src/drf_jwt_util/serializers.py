@@ -32,9 +32,6 @@ def get_field_by_name(option, name):
 
 class ObtainJSONWebTokenSerializer(JSONWebTokenSerializer):
     def __init__(self, *args, **kwargs):
-        """
-        Dynamically add the USERNAME_FIELD to self.fields.
-        """
         super(JSONWebTokenSerializer, self).__init__(*args, **kwargs)
         self.fields[get_username_field()] = get_field_by_name(UserModel._meta, get_username_field())
         self.fields['password'] = PasswordField(write_only=True)
@@ -46,8 +43,6 @@ class RefreshJSONWebTokenSerializer(OrigRefreshJSONWebTokenSerializer):
         if not uid:
             msg = _('Invalid payload.')
             raise serializers.ValidationError(msg)
-
-        # Make sure user exists
         try:
             user = get_user_model().objects.get(id=uid)
         except UserModel.DoesNotExist:
@@ -80,8 +75,6 @@ class ValidatePasswordMixin:
         if data['password1'] != data['password2']:
             raise serializers.ValidationError({"password2": _("You must type the same email each time.")})
         self.password = data["password1"]
-        del data["password1"]
-        del data["password2"]
         return data
 
 
@@ -102,3 +95,7 @@ class RegisterSerializer(ValidatePasswordMixin, serializers.ModelSerializer):
 class PasswordSerializer(ValidatePasswordMixin, serializers.Serializer):
     password1 = serializers.CharField()
     password2 = serializers.CharField()
+
+
+class EmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
