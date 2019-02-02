@@ -1,11 +1,16 @@
 // requierd: js-cookie, cookies, moment
 import moment from 'moment'
 
+function cookieStringify(val) {
+  return encodeURIComponent(String(JSON.stringify(val)))
+    .replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent)
+}
+
 class CookieWrap {
   constructor(cookie) {
     this._cookie = cookie
     this.options = {
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       domain: null,
       httpOnly: false,
     }
@@ -18,6 +23,14 @@ class CookieWrap {
   set(key, value) {
     if (process.server) {
       this._cookie.set(key, value, this.mergeOptions({ expires: moment().add(7, 'days').toDate() }))
+    } else {
+      this._cookie.set(key, value, this.mergeOptions({ expires: 7 }))
+    }
+  }
+
+  setJson(key, value) {
+    if (process.server) {
+      this._cookie.set(key, cookieStringify(value), this.mergeOptions({ expires: moment().add(7, 'days').toDate() }))
     } else {
       this._cookie.set(key, value, this.mergeOptions({ expires: 7 }))
     }

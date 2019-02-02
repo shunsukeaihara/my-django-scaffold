@@ -36,10 +36,13 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/vuetify',
     '@/plugins/cookie',
+    '@/plugins/filter',
     '@/plugins/form',
     '@/plugins/http',
+    '@/plugins/vuetify',
+    '@/plugins/toast',
+    '@/plugins/wrapped',
   ],
 
   /*

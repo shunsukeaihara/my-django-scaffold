@@ -4,12 +4,16 @@ import MySelect from '@/components/form/MySelect'
 import MyCheckbox from '@/components/form/MyCheckbox'
 import MyDateInput from '@/components/form/MyDateInput'
 import NonFieldErrors from '@/components/form/NonFieldErrors'
+import MyAutocomplete from '@/components/form/MyAutocomplete'
+import MyCombobox from '@/components/form/MyCombobox'
 
 Vue.component('MyInput', MyInput)
 Vue.component('MySelect', MySelect)
 Vue.component('MyCheckbox', MyCheckbox)
 Vue.component('MyDateInput', MyDateInput)
 Vue.component('NonFieldErrors', NonFieldErrors)
+Vue.component('MyAutocomplete', MyAutocomplete)
+Vue.component('MyCombobox', MyCombobox)
 
 export function createErrorDict(form) {
   let r = { nonFieldErrors: [] }

@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import cookie from 'js-cookie'
 import screen from './screen'
 import account, { TOKEN_COOKIE_NAME } from './account'
+import tokenInfo from './tokenInfo'
 
 function createPersistentPlugin(module) {
   let re = new RegExp(`^${module}/`)
@@ -9,7 +10,7 @@ function createPersistentPlugin(module) {
     store.subscribe((mutation, state) => {
       //console.log('subscribe', mutation, JSON.stringify(state[module]), mutation.type.match(re))
       if (mutation.type.match(re)) {
-        cookie.set(`store-${module}`, state[module])
+        store.app.$cookie.setJson(`store-${module}`, state[module])
       }
     })
   }
@@ -25,6 +26,8 @@ export default () => {
         }
         let screenInfo = req.cookies['store-screen']
         if (screenInfo) await commit('screen/SET', JSON.parse(screenInfo))
+        let storedTokenInfo = req.cookies['store-tokenInfo']
+        if (storedTokenInfo) await commit('tokenInfo/SET', JSON.parse(storedTokenInfo))
         return Promise.resolve()
       },
       async nuxtClientInit({ dispatch }, { app: { $cookie } }) {
@@ -37,8 +40,9 @@ export default () => {
     modules: {
       account,
       screen,
+      tokenInfo,
     },
-    plugins: [createPersistentPlugin('screen')],
+    plugins: [createPersistentPlugin('screen'), createPersistentPlugin('tokenInfo')],
   })
   if (process.browser) {
     // spaでの初期化の場合はnuxtClientInitではなくここでやらないと間に合わない
