@@ -72,14 +72,7 @@ class RegisterView(GenericAPIView):
             token = create_email_confirm_token(user)
             send_confirmation_email(user, token)
             return Response()
-        response = create_jwt_response(request, user)
-        if jwt_api_settings.JWT_AUTH_COOKIE:
-            expiration = (datetime.utcnow() + jwt_api_settings.JWT_EXPIRATION_DELTA)
-            response.set_cookie(jwt_api_settings.JWT_AUTH_COOKIE,
-                                token,
-                                expires=expiration,
-                                httponly=True)
-        return response
+        return Response()
 
 
 class EmailConfirmView(APIView):
@@ -108,9 +101,12 @@ class EmailConfirmView(APIView):
 
     def post(self, request, token):
         user = self.verify_token(token)
+        user = self.performe_update(user)
+        return create_jwt_response(request, user, statuscode=status.HTTP_200_OK)
+
+    def performe_update(self, user):
         user.is_active = True
         user.save()
-        return create_jwt_response(request, user, statuscode=status.HTTP_200_OK)
 
 
 class EmailChangeConfirmView(APIView):
@@ -139,9 +135,13 @@ class EmailChangeConfirmView(APIView):
 
     def post(self, request, token):
         user, email = self.verify_email_token(token, request)
+        user = self.performe_update(user, email)
+        return create_jwt_response(request, user, statuscode=status.HTTP_200_OK)
+
+    def performe_update(self, user, email):
         user.email = email
         user.save()
-        return create_jwt_response(request, user, statuscode=status.HTTP_200_OK)
+        return user
 
 
 class ActivationView(GenericAPIView):
@@ -173,10 +173,14 @@ class ActivationView(GenericAPIView):
         user = self.verify_token(token)
         s = self.get_serializer(data=request.data)
         s.is_valid(raise_exception=True)
-        user.is_active = True
-        user.set_password(s.password)
-        user.save()
+        user = self.performe_update(user, s.password)
         return create_jwt_response(request, user, statuscode=status.HTTP_200_OK)
+
+    def performe_update(self, user, password):
+        user.is_active = True
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class PasswordResetRequestView(GenericAPIView):
@@ -217,10 +221,14 @@ class PasswordResetView(GenericAPIView):
         user = self.verify_token(token)
         s = self.get_serializer(data=request.data)
         s.is_valid(raise_exception=True)
-        user.is_active = True
-        user.set_password(s.password)
-        user.save()
+        user = self.performe_update(user, s.password)
         return Response()  # resetの場合は再度loginさせる方が良い気はする
+
+    def performe_update(self, user, password):
+        user.is_active = True
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class ResendTokenView(APIView):
@@ -242,6 +250,14 @@ class PasswordChangeView(GenericAPIView):
         s.is_valid(raise_exception=True)
         request.user.set_password(s.password)
         request.user.save()
-        # 本番では消したほうが良いかもしれない
-        update_session_auth_hash(request, request.user)
+        # セッション認証用のhashを更新
+        update_session_auth_hash(request.user, request.user)
+        self.performe_update(request, s.password)
         return Response()  # 正しくパスワード変更できたら空の200を返す
+
+    def performe_update(self, user, password):
+        user.set_password(password)
+        user.save()
+        # セッション認証用のhashを更新
+        update_session_auth_hash(self.request, user)
+        return user
