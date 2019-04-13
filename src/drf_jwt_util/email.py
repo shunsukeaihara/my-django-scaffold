@@ -48,31 +48,24 @@ def send_passwordreset_email(user, token):
 
 
 def send_email(to_email, template_prefix, context):
+    def render_email(template, context):
+        try:
+            return render_to_string(template, context).strip()
+        except TemplateDoesNotExist:
+            return None
     from_email = api_settings.FROM_EMAIL
-    subject = render_to_string('{0}_subject.txt'.format(template_prefix),
-                               context)
+    subject = render_to_string('{}_subject.txt'.format(template_prefix), context)
     subject = " ".join(subject.splitlines()).strip()
 
-    bodies = {}
-    for ext in ['html', 'txt']:
-        try:
-            template_name = '{0}_message.{1}'.format(template_prefix, ext)
-            bodies[ext] = render_to_string(template_name,
-                                           context).strip()
-        except TemplateDoesNotExist:
-            if ext == 'txt' and not bodies:
-                raise
-    if 'txt' in bodies:
-        msg = EmailMultiAlternatives(subject,
-                                     bodies['txt'],
-                                     from_email,
-                                     [to_email])
-        if 'html' in bodies:
-            msg.attach_alternative(bodies['html'], 'text/html')
+    html_rendered = render_email('{}_message.html'.format(template_prefix))
+    text_rendered = render_email('{}_message.txt'.format(template_prefix))
+    if not html_rendered and not text_rendered:
+        raise TemplateDoesNotExist()
+    if text_rendered:
+        msg = EmailMultiAlternatives(subject, text_rendered, from_email, [to_email])
+        if html_rendered:
+            msg.attach_alternative(html_rendered, 'text/html')
     else:
-        msg = EmailMessage(subject,
-                           bodies['html'],
-                           from_email,
-                           [to_email])
+        msg = EmailMessage(subject, html_rendered, from_email, [to_email])
         msg.content_subtype = 'html'
     return msg.send()
