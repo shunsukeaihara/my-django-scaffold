@@ -1,8 +1,0 @@
-{% load i18n %}
-{% autoescape off %}
-{% blocktrans%}
-
-{{ token_url }}
-
-{% endblocktrans %}
-{% endautoescape %}
