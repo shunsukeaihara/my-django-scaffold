@@ -21,18 +21,18 @@
     "express": "^4.16.4",
     "js-cookie": "^2.2.0",
     "moment": "^2.24.0",
-    "nuxt": "^2.6.1",
+    "nuxt": "^2.6.3",
     "nuxt-env": "0.1.0",
     "qs": "^6.7.0",
-    "vuetify": "^1.5.11"
+    "vuetify": "^1.5.14"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-vue": "^5.2.2",
-    "node-sass": "^4.11.0",
-    "nodemon": "^1.18.11",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.0",
     "nuxt-client-init-module": "^0.1.4",
     "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
